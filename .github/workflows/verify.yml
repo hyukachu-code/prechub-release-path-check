@@ -1,0 +1,29 @@
+name: Verify release path action
+on: [push, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Confirm clean checkout passes
+        uses: ./
+      - name: Add a case-collision fixture to the index
+        run: |
+          mkdir -p Fixture fixture
+          touch Fixture/Hero.txt fixture/hero.txt
+          git add Fixture/Hero.txt fixture/hero.txt
+      - name: Expect the action to flag collisions
+        id: fixture
+        uses: ./
+        continue-on-error: true
+      - name: Check the result and JSON report
+        env:
+          OUTCOME: ${{ steps.fixture.outcome }}
+          COUNT: ${{ steps.fixture.outputs.collisions }}
+          REPORT: ${{ steps.fixture.outputs.report }}
+        run: |
+          test "$OUTCOME" = failure
+          test "$COUNT" = 2
+          node -e "const r=JSON.parse(require('node:fs').readFileSync(process.env.REPORT)); if(r.count!==2) process.exit(1)"

@@ -1,0 +1,19 @@
+name: 'prechub Release Path Check'
+description: 'Find case and Unicode filename collisions in tracked Git paths before packaging a cross-platform release.'
+author: 'prechub'
+branding:
+  icon: 'package'
+  color: 'blue'
+inputs:
+  fail_on_collision:
+    description: 'Fail the workflow when a collision is found.'
+    required: false
+    default: 'true'
+outputs:
+  collisions:
+    description: 'Number of distinct colliding path pairs.'
+  report:
+    description: 'Path to the JSON report in the runner temporary directory.'
+runs:
+  using: 'node24'
+  main: 'check.cjs'
