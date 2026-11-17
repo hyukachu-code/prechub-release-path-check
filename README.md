@@ -26,3 +26,5 @@ jobs:
 Set `fail_on_collision: 'false'` to create a report without failing the job on a finding. The `collisions` output counts distinct pairs of paths. The `report` output gives the location of the JSON report on the runner. Filenames are recorded in the report. The upload step is optional.
 
 For a packaged file list, Windows reserved names, duplicate archive entries, or paths outside the package root, use [Build Path Audit on Apify](https://apify.com/prechub/build-path-audit) or the [offline edition on itch.io](https://prechub.itch.io/build-path-audit). Both are paid options.
+
+For teams using a hosted API, the [optional Python quickstart](examples/rapidapi/README.md) includes a standalone client, local request validation and CI exit codes. Its default run makes no network request. An explicit `--send` uses your own [RapidAPI subscription](https://rapidapi.com/hyukachucode/api/build-path-audit), which may incur usage charges. The GitHub Action above continues to run locally without that subscription.
